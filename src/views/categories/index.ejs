@@ -21,15 +21,33 @@
             </thead>
             <tbody>
                 <% if (categories.length > 0) { %>
-                    <!-- lista de categorias vai aqui -->
-                <%} else {%>
+                   
+                    <%categories.forEach((category) => { %>
+
+                    <tr>
+                        <td><%= category.id %></td>
+                        <td><%= category.name %></td>
+                        <td><%= category.created_at %></td>
+                    </tr>
+
+                    <form action="/categories/delete" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir essa categoria?')">
+                        <input type="hidden" name="id" value="<%= category.id %>">
+                        <td><button type="submit" class="btn btn-danger">Excluir</button></td>
+                    </form>
+
+                    <% }) %>
+                <% } else { %>
+
+               
+
                 <tr>
                     <td colspan="4">Nenhuma categoria cadastrada</td>
                 </tr>
                 <% } %>
             </tbody>
         </table>
-        <a href="#" class="btn btn-primary mt-3">Adicionar</a>
+        <a href="categories/form" class="btn btn-primary mt-3">Adicionar</a>
+        <a href="/" class="btn btn-secondary mt-3">Voltar</a>
     </div>
 
     <!-- Bootstrap JS CDN -->

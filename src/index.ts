@@ -20,6 +20,12 @@ app.use(express.json());
 // Middleware para permitir dados no formato URLENCODED
 app.use(express.urlencoded({ extended: true }));
 
+
+app.get('/', function (req: Request, res: Response) {
+    return res.render('categories/home');
+});
+
+
 app.get('/categories', async function (req: Request, res: Response) {
     const [rows] = await connection.query("SELECT * FROM categories");
     return res.render('categories/index', {
@@ -27,4 +33,54 @@ app.get('/categories', async function (req: Request, res: Response) {
     });
 });
 
-app.listen('3000', () => console.log("Server is listening on port 3000"));
+
+app.get('/categories/form', async function (req: Request, res: Response) {
+    try {
+        return res.render('categories/form',{});
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({ error: 'Internal Server Error' });
+    }
+});
+
+
+app.post('/categories/add', async function (req: Request, res: Response) {
+    const {nome} = req.body;
+    if (!nome) {
+        return res.status(400).send({ error: 'Nome é obrigatório' });
+    }
+    try {
+        const result = await connection.query("SELECT * FROM categories WHERE name = (?)", [nome]);
+        
+        if (result[0][0]) {
+            return res.status(400).json({ error: 'Já existe uma categoria com este nome' });
+
+        }
+       
+        await connection.query("INSERT INTO categories (name) VALUES (?)", [nome]);
+        return res.redirect("/categories");
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({ error: 'Internal Server Error' });
+    }
+});
+
+app.post('/categories/delete', async function (req: Request, res: Response) {
+    const { id } = req.body;
+    if (!id) {
+        return res.status(400).send({ error: 'ID é obrigatório' });
+    }
+    try {
+        await connection.query("DELETE FROM categories WHERE id = ?", [id]);
+        return res.redirect("/categories");
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({ error: 'Internal Server Error' });
+    }
+});
+
+
+
+
+
+app.listen('3000', () => console.log("Server is listening on port http://localhost:3000 , http://localhost:8080"));
