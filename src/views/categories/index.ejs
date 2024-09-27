@@ -15,23 +15,27 @@
                 <tr>
                     <th>#</th>
                     <th>Nome</th>
-                    <th>Data de Cadastro</th>
-                    <th>Ações</th>
+                    <th>e-mail</th>
+                    <th>Papel</th>
+                    <th>Data de Cadastrp</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
-                <% if (categories.length > 0) { %>
+                <% if (users.length > 0) { %>
                    
-                    <%categories.forEach((category) => { %>
+                    <%users.forEach((users) => { %>
 
                     <tr>
-                        <td><%= category.id %></td>
-                        <td><%= category.name %></td>
-                        <td><%= category.created_at %></td>
+                        <td><%= users.id %></td>
+                        <td><%= users.nome %></td>
+                        <td><%= users.email %></td>
+                        <td><%= users.papel %></td>
+                        <td><%= users.data_cadastro %></td>
                     </tr>
 
                     <form action="/categories/delete" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir essa categoria?')">
-                        <input type="hidden" name="id" value="<%= category.id %>">
+                        <input type="hidden" name="id" value="<%= users.id %>">
                         <td><button type="submit" class="btn btn-danger">Excluir</button></td>
                     </form>
 
@@ -41,7 +45,7 @@
                
 
                 <tr>
-                    <td colspan="4">Nenhuma categoria cadastrada</td>
+                    <td colspan="4">Nenhum usuário cadastrado</td>
                 </tr>
                 <% } %>
             </tbody>

@@ -27,9 +27,9 @@ app.get('/', function (req: Request, res: Response) {
 
 
 app.get('/categories', async function (req: Request, res: Response) {
-    const [rows] = await connection.query("SELECT * FROM categories");
+    const [rows] = await connection.query("SELECT * FROM users");
     return res.render('categories/index', {
-        categories: rows
+        users: rows
     });
 });
 
@@ -55,10 +55,13 @@ app.post('/categories/add', async function (req: Request, res: Response) {
         if (result[0][0]) {
             return res.status(400).json({ error: 'Já existe uma categoria com este nome' });
 
+        }else{  
+            await connection.query("INSERT INTO categories (name) VALUES (?)", [nome]);
+            return res.status(200).send({ message: 'Categoria adicionada com sucesso' });
+            
         }
        
-        await connection.query("INSERT INTO categories (name) VALUES (?)", [nome]);
-        return res.redirect("/categories");
+      
     } catch (error) {
         console.error(error);
         return res.status(500).send({ error: 'Internal Server Error' });
