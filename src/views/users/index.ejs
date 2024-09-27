@@ -17,7 +17,7 @@
                     <th>Nome</th>
                     <th>e-mail</th>
                     <th>Papel</th>
-                    <th>Data de Cadastrp</th>
+                    <th>Data de Cadastro</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -31,13 +31,17 @@
                         <td><%= users.nome %></td>
                         <td><%= users.email %></td>
                         <td><%= users.papel %></td>
-                        <td><%= users.data_cadastro %></td>
-                    </tr>
+                        <td><%= users.data_cadastro.toLocaleDateString('pt-BR') %></td>
+                        <form action="/users/<%=users.id%>/delete" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir esse Usuario?')">
+                            <input type="hidden" name="id">
+                             <td><button type="submit" class="btn btn-danger">Excluir</button></td>
+                        </form>
 
-                    <form action="/categories/delete" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir essa categoria?')">
-                        <input type="hidden" name="id" value="<%= users.id %>">
-                        <td><button type="submit" class="btn btn-danger">Excluir</button></td>
-                    </form>
+                    <td>
+                        <button type="button" class="btn btn-secondary">Editar</button>
+                    </td>
+
+                    
 
                     <% }) %>
                 <% } else { %>
@@ -50,7 +54,7 @@
                 <% } %>
             </tbody>
         </table>
-        <a href="categories/form" class="btn btn-primary mt-3">Adicionar</a>
+        <a href="users/form" class="btn btn-primary mt-3">Adicionar</a>
         <a href="/" class="btn btn-secondary mt-3">Voltar</a>
     </div>
 
